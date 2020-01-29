@@ -1,6 +1,7 @@
 plugins {
-    id 'au.com.dius.pact' version '3.5.12'
-    id 'org.springframework.boot' version '1.5.9.RELEASE'
+    id 'au.com.dius.pact' version '3.6.14'
+    id 'org.springframework.boot' version '2.2.3.RELEASE'
+    id 'io.spring.dependency-management' version '1.0.9.RELEASE'
 }
 
 jar {
@@ -12,9 +13,11 @@ dependencies {
     compile 'org.springframework.boot:spring-boot-starter-web',
             'org.springframework.boot:spring-boot-starter-actuator'
 
+    compile group: 'com.github.javafaker', name: 'javafaker', version: '1.0.1'
+
     testCompile 'org.springframework.boot:spring-boot-starter-test',
-            'junit:junit',
-            'au.com.dius:pact-jvm-provider_2.10:2.2.1'
+            'junit:junit'
+    testCompile group: 'au.com.dius', name: 'pact-jvm-provider_2.12', version: '3.6.14'
 }
 
 pact {
@@ -23,8 +26,8 @@ pact {
             protocol ='http'
             host = 'localhost'
             port = 8080
-            hasPactsFromPactBroker('http://localhost:80')
-            hasPactsFromPactBrokerWithTag('http://localhost:80', 'INTEGRATION')
+            hasPactsFromPactBroker('http://localhost:8088')
+            hasPactsFromPactBrokerWithTag('http://localhost:8088', 'INTEGRATION')
         }
     }
 }

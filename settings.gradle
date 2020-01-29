@@ -1,1 +1,1 @@
-include 'consumer', 'provider'
+include 'consumer1', 'consumer2', 'consumer3', 'provider'

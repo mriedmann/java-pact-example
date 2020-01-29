@@ -1,0 +1,32 @@
+plugins {
+    id 'au.com.dius.pact' version '3.6.14'
+    id 'org.springframework.boot' version '2.2.3.RELEASE'
+    id 'io.spring.dependency-management' version '1.0.9.RELEASE'
+}
+
+dependencies {
+    compile 'org.springframework.boot:spring-boot-starter-web',
+            'org.springframework.boot:spring-boot-starter-actuator'
+
+    compile group: 'org.projectlombok', name: 'lombok', version: '1.18.10'
+    testCompile group: 'org.springframework.boot', name: 'spring-boot-starter-test', version: '2.2.4.RELEASE'
+
+    testCompile 'junit:junit',
+            'joda-time:joda-time:2.3',
+            'org.apache.commons:commons-collections4:4.0'
+    testCompile group: 'au.com.dius', name: 'pact-jvm-consumer-junit_2.12', version: '3.6.14'
+    testCompile group: 'au.com.dius', name: 'pact-jvm-consumer-java8_2.12', version: '3.6.14'
+}
+
+pactPublish.dependsOn test
+pact {
+    publish {
+        pactDirectory = "$buildDir/pacts"
+        pactBrokerUrl = 'http://localhost:8088'
+        tags = ['INTEGRATION']
+    }
+}
+
+test {
+    systemProperties['pact.rootDir'] = "$buildDir/pacts"
+}

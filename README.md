@@ -3,51 +3,51 @@
 Simple example project that uses pacts with Java.
 
 There are 2 sub projects:
-1. provider - A rest service with a hello world endpoint.
-2. consumer - A consumer of the hello world endpoint
+1. provider - A rest service with a CustomerService world endpoint.
+2. consumer - A consumer of the CustomerService world endpoint
 
 With this project you will be able to
-1. Create a pact using the consumer
-2. Publish it to a pact broker
-3. Verify that the provider fulfills the pact
+1. Create a CustomerConsumer using the consumer
+2. Publish it to a CustomerConsumer broker
+3. Verify that the provider fulfills the CustomerConsumer
 
 
 ## Steps
 
-### Start a pact broker
+### Start a CustomerConsumer broker
 
-In the pact-broker folder there is a docker compose file. 
-This manages starting up a pact broker and a postgres DB that it requires
+In the CustomerConsumer-broker folder there is a docker compose file. 
+This manages starting up a CustomerConsumer broker and a postgres DB that it requires
 
 ```sh
-cd pact-broker
+cd CustomerConsumer-broker
 docker-compose up
 ```
 
-Try navigating to localhost:80 in a browser and you should see the pact broker UI but no pacts... yet.
+Try navigating to localhost:80 in a browser and you should see the CustomerConsumer broker UI but no pacts... yet.
 
-### Publish a pact
+### Publish a CustomerConsumer
 
 Consumers are always responsible for creating pacts.
 
-A json file describing the pact can be generated with out example consumer by simply running the test.
-This occurs because the tests are annotated with annotations provided by the pact JVM plugin.
+A json file describing the CustomerConsumer can be generated with out example consumer by simply running the test.
+This occurs because the tests are annotated with annotations provided by the CustomerConsumer JVM plugin.
 
 The test code is actually starting a mock endpoint for the test and recording the interactions.
 
-To create a pact in the consumer/build/pacts simply run:
+To create a CustomerConsumer in the consumer/build/pacts simply run:
 
 ```sh
 ./gradlew :consumer:test
 ```
 
-You can publish the pact using (Note that the test intermediate step is not necessary as pactPublish depends on test):
+You can publish the CustomerConsumer using (Note that the test intermediate step is not necessary as pactPublish depends on test):
 
 ```sh
 ./gradlew :consumer:pactPublish
 ```
 
-If all goes well you should now see a pact present in the pact broker UI.
+If all goes well you should now see a CustomerConsumer present in the CustomerConsumer broker UI.
 
 ### Start the provider service
 
@@ -59,9 +59,9 @@ However for now you will need to start up the service. Do this in a new shell ta
 java -jar provider/build/libs/gs-actuator-service-0.1.0.jar
 ```
 
-### Verify the pact
+### Verify the CustomerConsumer
 
-Now you can verify the pact against the service you have just started
+Now you can verify the CustomerConsumer against the service you have just started
 
 Just do this:
 
@@ -69,11 +69,11 @@ Just do this:
 ./gradlew :provider:pactVerify
 ```
 
-You should see some output saying the pact was verified.
+You should see some output saying the CustomerConsumer was verified.
 
 ## Other points
 
-I explicitly tag the pact with INTEGRATION. This is just experimenting.
+I explicitly tag the CustomerConsumer with INTEGRATION. This is just experimenting.
 
 When fetching pacts to verify it gets the latest version with this tag. In the current setup it also verifies the latest
 version regardless of tag.
