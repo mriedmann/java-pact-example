@@ -10,25 +10,21 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-public class ProductController {
-    private final ProductRepository productRepository;
+public class CustomerProductController {
+    private final CustomerProductRepository customerProductRepository;
 
     @Autowired
-    public ProductController(ProductRepository productRepository) {
-        this.productRepository = productRepository;
+    public CustomerProductController(CustomerProductRepository customerProductRepository) {
+        this.customerProductRepository = customerProductRepository;
     }
 
-    @GetMapping("/products")
-    public List<Product> getProducts(@RequestParam(value="offset", required=false) Integer offset) {
+    @GetMapping("/customers/{id}/products")
+    public List<CustomerProduct> getCustomerProducts(@PathVariable int id, @RequestParam(value="offset", required=false) Integer offset) {
         if(offset == null) offset = 0;
-        return productRepository
-                .getAll().stream()
+
+        return customerProductRepository
+                .getAllByCustomerId(id).stream()
                 .skip(offset).limit(50)
                 .collect(Collectors.toList());
-    }
-
-    @GetMapping("/products/{id}")
-    public Product getProductById(@PathVariable("id") Long id) {
-        return productRepository.getOneById(id);
     }
 }

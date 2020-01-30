@@ -13,7 +13,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import java.math.BigDecimal;
 
-import static io.pactfoundation.consumer.dsl.LambdaDsl.newJsonArray;
+import static io.pactfoundation.consumer.dsl.LambdaDsl.newJsonArrayMaxLike;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE,
@@ -30,32 +30,17 @@ public class ProductTest {
     public RequestResponsePact getProductsFragment(PactDslWithProvider builder) {
         return builder
                 .given("test state")
-                .uponReceiving("ExampleJavaConsumerPactRuleTest test interaction")
+                .uponReceiving("GetAllProducts")
                 .path("/products")
+                .query("offset=0")
                 .method("GET")
                 .willRespondWith()
                 .status(200)
-                .body(newJsonArray((a) -> {
+                .body(newJsonArrayMaxLike(50, (a) -> {
                     a.object(o -> o
-                            .numberValue("id", 1)
-                            .stringValue("name", "term deposit account")
-                            .stringValue("interestRate", "0.005"));
-                    a.object(o -> o
-                            .numberValue("id", 2)
-                            .stringValue("name", "home loan")
-                            .stringValue("interestRate", "0.02"));
-                    a.object(o -> o
-                            .numberValue("id", 3)
-                            .stringValue("name", "vehicle loan")
-                            .stringValue("interestRate", "0.04"));
-                    a.object(o -> o
-                            .numberValue("id", 4)
-                            .stringValue("name", "pension backed loan")
-                            .stringValue("interestRate", "0.01"));
-                    a.object(o -> o
-                            .numberValue("id", 5)
-                            .stringValue("name", "student loan")
-                            .stringValue("interestRate", "0.003"));
+                            .numberType("id", 1)
+                            .stringType("name", "term deposit account")
+                            .decimalType("interestRate", new BigDecimal("0.005")));
                 }).build())
                 .toPact();
     }
@@ -64,12 +49,8 @@ public class ProductTest {
     @PactVerification(fragment = "getProductsFragment")
     public void shouldGetAllProducts() {
         Product[] products = new Product[] {
-                new Product(1, "term deposit account", new BigDecimal("0.005")),
-                new Product(2, "home loan", new BigDecimal("0.02")),
-                new Product(3, "vehicle loan", new BigDecimal("0.04")),
-                new Product(4, "pension backed loan", new BigDecimal("0.01")),
-                new Product(5, "student loan", new BigDecimal("0.003"))
+                new Product(1, "term deposit account", 0.005),
         };
-        Assert.assertArrayEquals(products, restClient.getAllProducts());
+        Assert.assertArrayEquals(products, restClient.getAllProducts(0));
     }
 }

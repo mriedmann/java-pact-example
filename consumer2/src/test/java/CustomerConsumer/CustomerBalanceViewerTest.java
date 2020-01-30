@@ -15,6 +15,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import java.math.BigDecimal;
 
 import static io.pactfoundation.consumer.dsl.LambdaDsl.newJsonArray;
+import static io.pactfoundation.consumer.dsl.LambdaDsl.newJsonArrayMaxLike;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE,
@@ -31,84 +32,84 @@ public class CustomerBalanceViewerTest {
     public RequestResponsePact createFragment(PactDslWithProvider builder) {
         return builder
                 .given("test state")
-                .uponReceiving("ExampleJavaConsumerPactRuleTest test interaction")
+                .uponReceiving("GetAllCustomersBalances")
                 .path("/customers")
                 .method("GET")
                 .willRespondWith()
                 .status(200)
-                .body(newJsonArray((a) -> {
+                .body(newJsonArrayMaxLike(50, (a) -> {
                     a.object(o -> o
-                            .numberValue("id",1)
-                            .stringValue("name", "Patsy Miles"));
+                            .numberType("id",1)
+                            .stringType("name", "Patsy Miles"));
                     a.object(o -> o
-                            .numberValue("id",2)
-                            .stringValue("name", "Floyd Brock"));
+                            .numberType("id",2)
+                            .stringType("name", "Floyd Brock"));
                     a.object(o -> o
-                            .numberValue("id",3)
-                            .stringValue("name", "Inez Ray"));
+                            .numberType("id",3)
+                            .stringType("name", "Inez Ray"));
                     a.object(o -> o
-                            .numberValue("id",4)
-                            .stringValue("name", "Terrell Guzman"));
+                            .numberType("id",4)
+                            .stringType("name", "Terrell Guzman"));
                     a.object(o -> o
-                            .numberValue("id",5)
-                            .stringValue("name", "Elias Hudson"));
+                            .numberType("id",5)
+                            .stringType("name", "Elias Hudson"));
                 }).build())
-                .uponReceiving("ExampleJavaConsumerPactRuleTest test interaction")
+                .uponReceiving("GetCustomerProducts 1")
                 .path("/customers/1/products")
                 .method("GET")
                 .willRespondWith()
                 .status(200)
-                .body(newJsonArray((a) -> {
+                .body(newJsonArrayMaxLike(100, (a) -> {
                     a.object(o -> o
-                            .stringValue("balance", "100.10"));
+                            .decimalType("balance", new BigDecimal("100.10")));
                     a.object(o -> o
-                            .stringValue("balance", "900.01"));
+                            .decimalType("balance", new BigDecimal("900.01")));
                 }).build())
-                .uponReceiving("ExampleJavaConsumerPactRuleTest test interaction")
+                .uponReceiving("GetCustomerProducts 2")
                 .path("/customers/2/products")
                 .method("GET")
                 .willRespondWith()
                 .status(200)
-                .body(newJsonArray((a) -> {
+                .body(newJsonArrayMaxLike(100, (a) -> {
                     a.object(o -> o
-                            .stringValue("balance", "11000.20"));
+                            .decimalType("balance", new BigDecimal("11000.20")));
                     a.object(o -> o
-                            .stringValue("balance", "9000.02"));
+                            .decimalType("balance", new BigDecimal("9000.02")));
                 }).build())
                 .given("test state")
-                .uponReceiving("ExampleJavaConsumerPactRuleTest test interaction")
+                .uponReceiving("GetCustomerProducts 3")
                 .path("/customers/3/products")
                 .method("GET")
                 .willRespondWith()
                 .status(200)
-                .body(newJsonArray((a) -> {
+                .body(newJsonArrayMaxLike(100, (a) -> {
                     a.object(o -> o
-                            .stringValue("balance", "210000.30"));
+                            .decimalType("balance", new BigDecimal("210000.30")));
                     a.object(o -> o
-                            .stringValue("balance", "90000.03"));
+                            .decimalType("balance", new BigDecimal("90000.03")));
                 }).build())
-                .uponReceiving("ExampleJavaConsumerPactRuleTest test interaction")
+                .uponReceiving("GetCustomerProducts 4")
                 .path("/customers/4/products")
                 .method("GET")
                 .willRespondWith()
                 .status(200)
-                .body(newJsonArray((a) -> {
+                .body(newJsonArrayMaxLike(100, (a) -> {
                     a.object(o -> o
-                            .stringValue("balance", "3100000.40"));
+                            .decimalType("balance", new BigDecimal("3100000.40")));
                     a.object(o -> o
-                            .stringValue("balance", "900000.04"));
+                            .decimalType("balance", new BigDecimal("900000.04")));
                 }).build())
                 .given("test state")
-                .uponReceiving("ExampleJavaConsumerPactRuleTest test interaction")
+                .uponReceiving("GetCustomerProducts 5")
                 .path("/customers/5/products")
                 .method("GET")
                 .willRespondWith()
                 .status(200)
-                .body(newJsonArray((a) -> {
+                .body(newJsonArrayMaxLike(100, (a) -> {
                     a.object(o -> o
-                            .stringValue("balance", "41000000.50"));
+                            .decimalType("balance", new BigDecimal("41000000.50")));
                     a.object(o -> o
-                            .stringValue("balance", "9000000.05"));
+                            .decimalType("balance", new BigDecimal("9000000.05")));
                 }).build())
                 .toPact();
     }

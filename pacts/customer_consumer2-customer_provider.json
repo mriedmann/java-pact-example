@@ -1,0 +1,388 @@
+{
+  "provider": {
+    "name": "customer_provider"
+  },
+  "consumer": {
+    "name": "customer_consumer2"
+  },
+  "interactions": [
+    {
+      "description": "GetAllCustomersBalances",
+      "request": {
+        "method": "GET",
+        "path": "/customers"
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json; charset\u003dUTF-8"
+        },
+        "body": [
+          {
+            "name": "Patsy Miles",
+            "id": 1
+          },
+          {
+            "name": "Floyd Brock",
+            "id": 2
+          },
+          {
+            "name": "Inez Ray",
+            "id": 3
+          },
+          {
+            "name": "Terrell Guzman",
+            "id": 4
+          },
+          {
+            "name": "Elias Hudson",
+            "id": 5
+          }
+        ],
+        "matchingRules": {
+          "body": {
+            "$": {
+              "matchers": [
+                {
+                  "match": "type",
+                  "max": 50
+                }
+              ],
+              "combine": "AND"
+            },
+            "$[*].id": {
+              "matchers": [
+                {
+                  "match": "number"
+                }
+              ],
+              "combine": "AND"
+            },
+            "$[*].name": {
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ],
+              "combine": "AND"
+            }
+          },
+          "header": {
+            "Content-Type": {
+              "matchers": [
+                {
+                  "match": "regex",
+                  "regex": "application/json(;\\s?charset\u003d[\\w\\-]+)?"
+                }
+              ],
+              "combine": "AND"
+            }
+          }
+        }
+      },
+      "providerStates": [
+        {
+          "name": "test state"
+        }
+      ]
+    },
+    {
+      "description": "GetCustomerProducts 1",
+      "request": {
+        "method": "GET",
+        "path": "/customers/1/products"
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json; charset\u003dUTF-8"
+        },
+        "body": [
+          {
+            "balance": 100.1
+          },
+          {
+            "balance": 900.01
+          }
+        ],
+        "matchingRules": {
+          "body": {
+            "$": {
+              "matchers": [
+                {
+                  "match": "type",
+                  "max": 100
+                }
+              ],
+              "combine": "AND"
+            },
+            "$[*].balance": {
+              "matchers": [
+                {
+                  "match": "decimal"
+                }
+              ],
+              "combine": "AND"
+            }
+          },
+          "header": {
+            "Content-Type": {
+              "matchers": [
+                {
+                  "match": "regex",
+                  "regex": "application/json(;\\s?charset\u003d[\\w\\-]+)?"
+                }
+              ],
+              "combine": "AND"
+            }
+          }
+        }
+      },
+      "providerStates": [
+        {
+          "name": "test state"
+        }
+      ]
+    },
+    {
+      "description": "GetCustomerProducts 2",
+      "request": {
+        "method": "GET",
+        "path": "/customers/2/products"
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json; charset\u003dUTF-8"
+        },
+        "body": [
+          {
+            "balance": 11000.2
+          },
+          {
+            "balance": 9000.02
+          }
+        ],
+        "matchingRules": {
+          "body": {
+            "$": {
+              "matchers": [
+                {
+                  "match": "type",
+                  "max": 100
+                }
+              ],
+              "combine": "AND"
+            },
+            "$[*].balance": {
+              "matchers": [
+                {
+                  "match": "decimal"
+                }
+              ],
+              "combine": "AND"
+            }
+          },
+          "header": {
+            "Content-Type": {
+              "matchers": [
+                {
+                  "match": "regex",
+                  "regex": "application/json(;\\s?charset\u003d[\\w\\-]+)?"
+                }
+              ],
+              "combine": "AND"
+            }
+          }
+        }
+      },
+      "providerStates": [
+        {
+          "name": "test state"
+        }
+      ]
+    },
+    {
+      "description": "GetCustomerProducts 3",
+      "request": {
+        "method": "GET",
+        "path": "/customers/3/products"
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json; charset\u003dUTF-8"
+        },
+        "body": [
+          {
+            "balance": 210000.3
+          },
+          {
+            "balance": 90000.03
+          }
+        ],
+        "matchingRules": {
+          "body": {
+            "$": {
+              "matchers": [
+                {
+                  "match": "type",
+                  "max": 100
+                }
+              ],
+              "combine": "AND"
+            },
+            "$[*].balance": {
+              "matchers": [
+                {
+                  "match": "decimal"
+                }
+              ],
+              "combine": "AND"
+            }
+          },
+          "header": {
+            "Content-Type": {
+              "matchers": [
+                {
+                  "match": "regex",
+                  "regex": "application/json(;\\s?charset\u003d[\\w\\-]+)?"
+                }
+              ],
+              "combine": "AND"
+            }
+          }
+        }
+      },
+      "providerStates": [
+        {
+          "name": "test state"
+        }
+      ]
+    },
+    {
+      "description": "GetCustomerProducts 4",
+      "request": {
+        "method": "GET",
+        "path": "/customers/4/products"
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json; charset\u003dUTF-8"
+        },
+        "body": [
+          {
+            "balance": 3100000.4
+          },
+          {
+            "balance": 900000.04
+          }
+        ],
+        "matchingRules": {
+          "body": {
+            "$": {
+              "matchers": [
+                {
+                  "match": "type",
+                  "max": 100
+                }
+              ],
+              "combine": "AND"
+            },
+            "$[*].balance": {
+              "matchers": [
+                {
+                  "match": "decimal"
+                }
+              ],
+              "combine": "AND"
+            }
+          },
+          "header": {
+            "Content-Type": {
+              "matchers": [
+                {
+                  "match": "regex",
+                  "regex": "application/json(;\\s?charset\u003d[\\w\\-]+)?"
+                }
+              ],
+              "combine": "AND"
+            }
+          }
+        }
+      },
+      "providerStates": [
+        {
+          "name": "test state"
+        }
+      ]
+    },
+    {
+      "description": "GetCustomerProducts 5",
+      "request": {
+        "method": "GET",
+        "path": "/customers/5/products"
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json; charset\u003dUTF-8"
+        },
+        "body": [
+          {
+            "balance": 41000000.5
+          },
+          {
+            "balance": 9000000.05
+          }
+        ],
+        "matchingRules": {
+          "body": {
+            "$": {
+              "matchers": [
+                {
+                  "match": "type",
+                  "max": 100
+                }
+              ],
+              "combine": "AND"
+            },
+            "$[*].balance": {
+              "matchers": [
+                {
+                  "match": "decimal"
+                }
+              ],
+              "combine": "AND"
+            }
+          },
+          "header": {
+            "Content-Type": {
+              "matchers": [
+                {
+                  "match": "regex",
+                  "regex": "application/json(;\\s?charset\u003d[\\w\\-]+)?"
+                }
+              ],
+              "combine": "AND"
+            }
+          }
+        }
+      },
+      "providerStates": [
+        {
+          "name": "test state"
+        }
+      ]
+    }
+  ],
+  "metadata": {
+    "pactSpecification": {
+      "version": "3.0.0"
+    },
+    "pact-jvm": {
+      "version": "3.6.14"
+    }
+  }
+}

@@ -29,7 +29,7 @@ public class CustomerClient {
                 Customer[].class, vars);
     }
 
-    public Product[] getAllProducts() {
-        return restTemplate.getForObject("/products", Product[].class);
+    public Product[] getAllProducts(int offset) {
+        return restTemplate.getForObject("/products?offset={offset}", Product[].class, offset);
     }
 }

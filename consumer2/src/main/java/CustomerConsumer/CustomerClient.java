@@ -7,7 +7,6 @@ import org.springframework.web.util.DefaultUriBuilderFactory;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.Arrays;
 
 @Service
 public class CustomerClient {

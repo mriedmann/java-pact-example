@@ -14,7 +14,7 @@ dependencies {
             'org.springframework.boot:spring-boot-starter-actuator'
 
     compile group: 'com.github.javafaker', name: 'javafaker', version: '1.0.1'
-
+    compile group: 'org.projectlombok', name: 'lombok', version: '1.18.10'
     testCompile 'org.springframework.boot:spring-boot-starter-test',
             'junit:junit'
     testCompile group: 'au.com.dius', name: 'pact-jvm-provider_2.12', version: '3.6.14'
@@ -22,12 +22,13 @@ dependencies {
 
 pact {
     serviceProviders {
-        provider {
+        customer_provider {
             protocol ='http'
             host = 'localhost'
             port = 8080
-            hasPactsFromPactBroker('http://localhost:8088')
-            hasPactsFromPactBrokerWithTag('http://localhost:8088', 'INTEGRATION')
+            hasPactsWith('manyConsumers') {
+                pactFileLocation = file("$projectDir/../pacts")
+            }
         }
     }
 }

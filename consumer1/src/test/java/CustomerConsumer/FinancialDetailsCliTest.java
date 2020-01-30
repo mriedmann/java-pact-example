@@ -51,7 +51,7 @@ public class FinancialDetailsCliTest {
 
     @Test
     public void CliTest() throws Exception {
-        when(clientMock.getAllCustomers()).thenReturn(customers);
+        when(clientMock.getAllCustomers(0)).thenReturn(customers);
 
         String expectedOutput = "1,Patsy Miles,patsy.miles@example.com,ACTIVE\n" +
                                 "2,Floyd Brock,floyd.brock@example.com,INACTIVE\n" +
@@ -60,9 +60,9 @@ public class FinancialDetailsCliTest {
                                 "5,Elias Hudson,elias.hudson@example.com,INACTIVE\n";
         ConsumerRunner runner = new ConsumerRunner(clientMock);
 
-        runner.run("");
+        runner.run();
 
-        verify(clientMock).getAllCustomers();
+        verify(clientMock).getAllCustomers(0);
         Assert.assertEquals(expectedOutput, outContent.toString());
         Assert.assertEquals("", errContent.toString());
     }

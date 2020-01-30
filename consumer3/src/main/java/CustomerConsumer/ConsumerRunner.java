@@ -15,14 +15,15 @@ public class ConsumerRunner implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        if(args.length < 1) return;
+        if(args.length < 2) return;
         if(args[0].equals("products")){
-            Product[] products = client.getAllProducts();
+            int offset = Integer.parseInt(args[1]);
+            Product[] products = client.getAllProducts(offset);
             for (Product product : products) {
                 System.out.printf("%d,%s,%f\n", product.getId(), product.getName(), product.getInterestRate());
             }
         }
-        if(args.length < 2) return;
+        if(args.length < 3) return;
         if(args[0].equals("customers")){
             Customer[] customers = client.findCustomers(args[1], CustomerStatus.valueOf(args[2]));
             for (Customer customer : customers) {

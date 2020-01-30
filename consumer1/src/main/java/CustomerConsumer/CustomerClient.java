@@ -16,7 +16,7 @@ public class CustomerClient {
         this.restTemplate = new RestTemplateBuilder().rootUri(baseUrl).build();
     }
 
-    public Customer[] getAllCustomers(){
-        return restTemplate.getForObject("/customers", Customer[].class);
+    public Customer[] getAllCustomers(Integer offset){
+        return restTemplate.getForObject("/customers?offset={offset}", Customer[].class, offset);
     }
 }

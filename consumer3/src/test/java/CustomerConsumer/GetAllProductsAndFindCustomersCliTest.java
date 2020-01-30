@@ -7,7 +7,6 @@ import org.mockito.junit.MockitoRule;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
-import java.math.BigDecimal;
 
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -40,13 +39,13 @@ public class GetAllProductsAndFindCustomersCliTest {
     @Test
     public void getAllProductsCliTest() throws Exception {
          Product[] products = new Product[] {
-                new Product(1, "term deposit account", new BigDecimal("0.005")),
-                new Product(2, "home loan", new BigDecimal("0.02")),
-                new Product(3, "vehicle loan", new BigDecimal("0.04")),
-                new Product(4, "pension backed loan", new BigDecimal("0.01")),
-                new Product(5, "student loan", new BigDecimal("0.003"))
+                new Product(1, "term deposit account", 0.005),
+                new Product(2, "home loan", 0.02),
+                new Product(3, "vehicle loan", 0.04),
+                new Product(4, "pension backed loan", 0.01),
+                new Product(5, "student loan", 0.003)
         };
-        when(clientMock.getAllProducts()).thenReturn(products);
+        when(clientMock.getAllProducts(0)).thenReturn(products);
 
         String expectedOutput = "1,term deposit account,0.005000\n" +
                                 "2,home loan,0.020000\n" +
@@ -55,9 +54,9 @@ public class GetAllProductsAndFindCustomersCliTest {
                                 "5,student loan,0.003000\n";
         ConsumerRunner runner = new ConsumerRunner(clientMock);
 
-        runner.run("products");
+        runner.run("products", "0");
 
-        verify(clientMock).getAllProducts();
+        verify(clientMock).getAllProducts(0);
         Assert.assertEquals(expectedOutput, outContent.toString());
         Assert.assertEquals("", errContent.toString());
     }

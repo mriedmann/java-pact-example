@@ -26,8 +26,7 @@ public class ProductRepository {
         return new Product(
                 counter.incrementAndGet(),
                 faker.commerce().productName(),
-                BigDecimal.valueOf(faker.number().randomDouble(5, 0,5000000)),
-                BigDecimal.valueOf(faker.number().randomDouble(10, 0,50))
+                BigDecimal.valueOf(faker.number().randomDouble(4, 0,1))
         );
     }
 

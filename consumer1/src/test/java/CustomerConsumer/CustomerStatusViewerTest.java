@@ -11,7 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import static io.pactfoundation.consumer.dsl.LambdaDsl.newJsonArray;
+import static io.pactfoundation.consumer.dsl.LambdaDsl.newJsonArrayMaxLike;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE,
@@ -28,37 +28,18 @@ public class CustomerStatusViewerTest {
     public RequestResponsePact createFragment(PactDslWithProvider builder) {
         return builder
                 .given("test state")
-                .uponReceiving("ExampleJavaConsumerPactRuleTest test interaction")
+                .uponReceiving("GetAllCustomersWithNameEmailAndStatus with offset 0")
                 .path("/customers")
+                .query("offset=0")
                 .method("GET")
                 .willRespondWith()
                 .status(200)
-                .body(newJsonArray((a) -> {
+                .body(newJsonArrayMaxLike(50, (a) -> {
                     a.object(o -> o
-                            .numberValue("id", 1)
-                            .stringValue("name", "Patsy Miles")
-                            .stringValue("email", "patsy.miles@example.com")
-                            .stringValue("status","ACTIVE"));
-                    a.object(o -> o
-                            .numberValue("id", 2)
-                            .stringValue("name", "Floyd Brock")
-                            .stringValue("email", "floyd.brock@example.com")
-                            .stringValue("status", "INACTIVE"));
-                    a.object(o -> o
-                            .numberValue("id", 3)
-                            .stringValue("name", "Inez Ray")
-                            .stringValue("email", "inez.ray@example.com")
-                            .stringValue("status","LOCKED"));
-                    a.object(o -> o
-                            .numberValue("id", 4)
-                            .stringValue("name", "Terrell Guzman")
-                            .stringValue("email", "terrell.guzman@example.com")
-                            .stringValue("status", "ACTIVE"));
-                    a.object(o -> o
-                            .numberValue("id", 5)
-                            .stringValue("name", "Elias Hudson")
-                            .stringValue("email", "elias.hudson@example.com")
-                            .stringValue("status", "INACTIVE"));
+                            .numberType("id", 1)
+                            .stringType("name", "Patsy Miles")
+                            .stringType("email", "patsy.miles@example.com")
+                            .stringType("status","ACTIVE"));
                 }).build())
                 .toPact();
     }
@@ -67,12 +48,8 @@ public class CustomerStatusViewerTest {
     @Test
     public void shouldGetAllCustomersWithNameEmailAndStatus() {
         Customer[] l = new Customer[] {
-                new Customer(1,"Patsy Miles", "patsy.miles@example.com", CustomerStatus.ACTIVE),
-                new Customer(2,"Floyd Brock", "floyd.brock@example.com", CustomerStatus.INACTIVE),
-                new Customer(3,"Inez Ray", "inez.ray@example.com", CustomerStatus.LOCKED),
-                new Customer(4,"Terrell Guzman", "terrell.guzman@example.com", CustomerStatus.ACTIVE),
-                new Customer(5,"Elias Hudson", "elias.hudson@example.com", CustomerStatus.INACTIVE)
+                new Customer(1,"Patsy Miles", "patsy.miles@example.com", CustomerStatus.ACTIVE)
         };
-        Assert.assertArrayEquals(l, restClient.getAllCustomers());
+        Assert.assertArrayEquals(l, restClient.getAllCustomers(0));
     }
 }

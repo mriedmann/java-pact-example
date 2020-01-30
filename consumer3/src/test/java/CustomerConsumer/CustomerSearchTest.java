@@ -13,9 +13,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import java.math.BigDecimal;
 
-import static io.pactfoundation.consumer.dsl.LambdaDsl.newJsonArray;
+import static io.pactfoundation.consumer.dsl.LambdaDsl.*;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE,
@@ -32,23 +31,18 @@ public class CustomerSearchTest {
     public RequestResponsePact getCustomersByNameFragment(PactDslWithProvider builder) {
         return builder
                 .given("test state")
-                .uponReceiving("ExampleJavaConsumerPactRuleTest test interaction")
+                .uponReceiving("FindAllCustomers with name contains 'el'")
                 .path("/customers")
                 .query("name=el&status=ANY")
                 .method("GET")
                 .willRespondWith()
                 .status(200)
-                .body(newJsonArray((a) -> {
+                .body(newJsonArrayMaxLike(50, (a) -> {
                     a.object(o -> o
-                            .numberValue("id", 4)
-                            .stringValue("name", "Terrell Guzman")
-                            .stringValue("email", "terrell.guzman@example.com")
-                            .stringValue("status", "ACTIVE"));
-                    a.object(o -> o
-                            .numberValue("id", 5)
-                            .stringValue("name", "Elias Hudson")
-                            .stringValue("email", "elias.hudson@example.com")
-                            .stringValue("status", "INACTIVE"));
+                            .numberType("id", 4)
+                            .stringMatcher("name", ".*[Ee]l.*", "Terrell Guzman")
+                            .stringType("email", "terrell.guzman@example.com")
+                            .stringType("status", "ACTIVE"));
                 }).build())
                 .toPact();
     }
@@ -57,17 +51,17 @@ public class CustomerSearchTest {
     public RequestResponsePact getCustomersByNameAndStatusFragment(PactDslWithProvider builder) {
         return builder
                 .given("test state")
-                .uponReceiving("ExampleJavaConsumerPactRuleTest test interaction")
+                .uponReceiving("FindAllCustomers with name contains 'el' and ACTIVE status")
                 .path("/customers")
                 .query("name=el&status=ACTIVE")
                 .method("GET")
                 .willRespondWith()
                 .status(200)
-                .body(newJsonArray((a) -> {
+                .body(newJsonArrayMaxLike(50, (a) -> {
                     a.object(o -> o
-                            .numberValue("id", 4)
-                            .stringValue("name", "Terrell Guzman")
-                            .stringValue("email", "terrell.guzman@example.com")
+                            .numberType("id", 4)
+                            .stringMatcher("name", ".*[Ee]l.*", "Terrell Guzman")
+                            .stringType("email", "terrell.guzman@example.com")
                             .stringValue("status", "ACTIVE"));
                 }).build())
                 .toPact();
@@ -77,22 +71,17 @@ public class CustomerSearchTest {
     public RequestResponsePact getCustomersByStatusFragment(PactDslWithProvider builder) {
         return builder
                 .given("test state")
-                .uponReceiving("ExampleJavaConsumerPactRuleTest test interaction")
+                .uponReceiving("FindAllCustomers ACTIVE status")
                 .path("/customers")
                 .query("name=&status=ACTIVE")
                 .method("GET")
                 .willRespondWith()
                 .status(200)
-                .body(newJsonArray((a) -> {
+                .body(newJsonArrayMaxLike(50, (a) -> {
                     a.object(o -> o
-                            .numberValue("id", 1)
-                            .stringValue("name", "Patsy Miles")
-                            .stringValue("email", "patsy.miles@example.com")
-                            .stringValue("status", "ACTIVE"));
-                    a.object(o -> o
-                            .numberValue("id", 4)
-                            .stringValue("name", "Terrell Guzman")
-                            .stringValue("email", "terrell.guzman@example.com")
+                            .numberType("id", 1)
+                            .stringType("name", "Patsy Miles")
+                            .stringType("email", "patsy.miles@example.com")
                             .stringValue("status", "ACTIVE"));
                 }).build())
                 .toPact();
@@ -103,7 +92,6 @@ public class CustomerSearchTest {
     public void shouldFindAllCustomersByName() {
         Customer[] l = new Customer[] {
                 new Customer(4,"Terrell Guzman", "terrell.guzman@example.com", CustomerStatus.ACTIVE),
-                new Customer(5,"Elias Hudson", "elias.hudson@example.com", CustomerStatus.INACTIVE)
         };
         Assert.assertArrayEquals(l, restClient.findCustomers("el", CustomerStatus.ANY));
     }
@@ -122,7 +110,6 @@ public class CustomerSearchTest {
     public void shouldFindAllCustomersByStatus() {
         Customer[] l = new Customer[]{
                 new Customer(1,"Patsy Miles", "patsy.miles@example.com", CustomerStatus.ACTIVE),
-                new Customer(4,"Terrell Guzman", "terrell.guzman@example.com", CustomerStatus.ACTIVE),
         };
         Assert.assertArrayEquals(l, restClient.findCustomers(null, CustomerStatus.ACTIVE));
     }
